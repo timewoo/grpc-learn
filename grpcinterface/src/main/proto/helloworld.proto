@@ -1,0 +1,21 @@
+//指定proto语法版本
+syntax = "proto3";
+// 设置message是否拆分，默认为false，生成的message放在一个java类中
+option java_multiple_files = true;
+// 设置生成的java的package路径
+option java_package = "com.example.grpcinterface.grpc";
+
+package helloworld;
+// 接口服务
+service Greeter{
+  // rpc接口
+  rpc sayHello(HelloRequest) returns (HelloReply);
+}
+// 请求model
+message HelloRequest{
+  string name = 1;
+}
+// 响应model
+message HelloReply{
+  string message = 1;
+}

@@ -1,0 +1,351 @@
+syntax = "proto3";
+option java_package = "com.aylaasia.referenceapp.grpc";
+import "google/protobuf/empty.proto";
+import "Base.proto";
+import "google/protobuf/wrappers.proto";
+/**
+设备相关接口
+ */
+service DeviceService{
+  /**
+  绑定设备
+   */
+  rpc bindDevice(BindDeviceReq) returns (Result);
+
+  /**
+  设备列表
+   */
+  rpc getDeviceList(google.protobuf.Empty) returns (DeviceListResp);
+
+  /**
+  设备详情
+   */
+  rpc getDeviceInfo(DeviceReq) returns (Device);
+
+  /**
+  设备解绑
+   */
+  rpc unBindDevice(UnBindDeviceReq) returns (UnBindDeviceResp);
+
+  /**
+  设置设备属性值
+   */
+  rpc setDeviceProperty(SetDevicePropertyReq) returns (Result);
+
+  /**
+  获取设备属性值
+   */
+  rpc getDeviceProperty(GetDevicePropertyReq) returns (DevicePropertyResp);
+
+  /**
+  获取设备所有属性值
+   */
+  rpc getDeviceProperties(GetDevicePropertiesReq) returns (GetDevicePropertiesResp);
+
+  /**
+  编辑设备信息
+   */
+  rpc updateDevice(UpdateDeviceReq) returns (Device);
+
+  /**
+  获取设备联网状态
+   */
+  rpc getDeviceConnected(GetDeviceConnected) returns (Result);
+
+  /**
+  恢复出厂设置
+  入参：deviceId
+   */
+  rpc factoryReset(google.protobuf.StringValue) returns (Result);
+
+  /**
+  获取设备默认产品名称，deviceId
+   */
+  rpc getDeviceDefaultName(google.protobuf.StringValue) returns (GetDeviceDefaultNameResp);
+
+  /**
+  首页排序，设备+群组
+   */
+  rpc sortFrontPage(SortFrontPageReq) returns (Result);
+}
+
+/**
+绑定设备入参
+ */
+message BindDeviceReq{
+  /**
+  设备id
+   */
+  string deviceId = 2;
+  /**
+   设备名称
+   */
+  string nickName = 3;
+  /**
+  setup Token
+   */
+  string setupToken = 4;
+}
+
+/**
+设备列表出参
+ */
+message DeviceListResp{
+  /**
+  设备详情 list
+   */
+  repeated Device devices = 1;
+}
+
+/**
+设备详情入参
+ */
+message DeviceReq{
+  /**
+  设备id
+   */
+  string deviceId = 1;
+}
+/**
+设备详情出参
+ */
+message Device{
+  /**
+  设备id
+   */
+  string deviceId = 1;
+  /**
+  设备名称
+   */
+  string nickName = 2;
+  /**
+  连接状态 在线ONLINE 离线OFFLINE
+   */
+  string connectionStatus = 3;
+  /**
+  固件版本号
+   */
+  string firmwareVersion = 4;
+  /**
+  mac地址
+   */
+  string macAddress = 5;
+  /**
+  协议类型
+   */
+  string connectivity = 6;
+  /**
+  pid
+   */
+  string pId = 7;
+  /**
+  deviceCategory(oem model)
+   */
+  string deviceCategory = 8;
+  /**
+  设备类型
+   */
+  enum DeviceUseType{
+    //常规设备
+    DEFAULT_TYPE = 0;
+    //用途
+    PURPOSE = 1;
+    //红外源设备
+    INFRARED_SOURCE = 2;
+    //用途源设备
+    PURPOSE_SOURCE = 3;
+    //群组设备
+    ABP_VIRTUAL = 4;
+  }
+  DeviceUseType deviceUseType = 9;
+  /**
+  创建时间
+   */
+  int64 createTime = 10;
+  /**
+  房间id
+   */
+  string roomId = 11;
+  /**
+  楼层排序
+   */
+  int32 floorSort = 12;
+  /**
+  排序
+   */
+  int32 sort = 13;
+}
+
+/**
+解绑设备入参
+ */
+message UnBindDeviceReq{
+  /**
+  设备id
+   */
+  string deviceId = 1;
+}
+
+/**
+解绑设备出参
+ */
+message UnBindDeviceResp{
+
+  /**
+  设备id
+   */
+  string deviceId = 1;
+}
+
+/**
+设置设备属性值入参
+ */
+message SetDevicePropertyReq{
+  /**
+  设备id
+   */
+  string deviceId = 1;
+  /**
+  设备属性
+   */
+  string propertyName = 2;
+  /**
+  设置属性值
+   */
+  string propertyValue = 3;
+}
+
+/**
+获取设备属性值入参
+ */
+message GetDevicePropertyReq{
+  /**
+  设备id
+   */
+  string deviceId = 1;
+  /**
+  设备属性值
+   */
+  string propertyName = 2;
+}
+
+/**
+获取设备属性值出参
+ */
+message DevicePropertyResp{
+
+  /**
+  设备id
+   */
+  string deviceId = 1;
+
+  /**
+  设备属性
+   */
+  DeviceProperty deviceProperty = 2;
+}
+
+/**
+获取设备所有属性值入参
+ */
+message GetDevicePropertiesReq{
+  /**
+  设备id
+   */
+  string deviceId = 1;
+}
+
+/**
+获取设备所有属性值出参
+ */
+message GetDevicePropertiesResp{
+  /**
+  属性值列表
+   */
+  repeated DeviceProperty deviceProperties = 1;
+}
+
+/**
+设备属性
+ */
+message DeviceProperty{
+  /**
+  设备属性名
+   */
+  string propertyName = 1;
+  /**
+  设备属性值
+   */
+  string propertyValue = 2;
+}
+
+/**
+编辑设备信息入参
+ */
+message UpdateDeviceReq{
+  /**
+  设备id
+   */
+  string deviceId = 1;
+  /**
+  设备名称
+   */
+  string nickName = 2;
+  /**
+  房间id
+   */
+  string roomId = 3;
+}
+
+/**
+轮询设备联网状态入参
+ */
+message GetDeviceConnected{
+  /**
+  设备id
+   */
+  string deviceId = 1;
+  /**
+  setup Token
+   */
+  string setupToken = 2;
+}
+/**
+设备默认名称
+ */
+message GetDeviceDefaultNameResp{
+  /**
+  设备id
+   */
+  string deviceId = 1;
+  /**
+  默认产品名称
+   */
+  string defaultName = 2;
+}
+/**
+ 首页排序入参
+ */
+message SortFrontPageReq{
+  /**
+  roomId
+   */
+  string roomId=1;
+  /**
+  排序数据
+   */
+  repeated SortData sortData=2;
+}
+/**
+排序数据
+ */
+message SortData{
+  /**
+  排序id(deviceId or groupId)
+   */
+  string sortId=1;
+  /**
+  排序
+   */
+  int32 sort=2;
+}

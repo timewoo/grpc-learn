@@ -1,0 +1,136 @@
+syntax = "proto3";
+import "google/protobuf/wrappers.proto";
+
+service AppService{
+  /**
+  上传app包或者图片
+   */
+  rpc uploadAppOrImg(UploadAppOrImgReq) returns (google.protobuf.StringValue);
+
+  /**
+  获取app最新版本
+   */
+  rpc getAppInfo(GetAppInfoReq) returns (AppInfo);
+}
+/**
+获取app最新版本入参
+ */
+message GetAppInfoReq{
+  /**
+  appId
+   */
+  int32 appId = 1;
+  /**
+  版本号
+   */
+  int64 versionCode = 2;
+  /**
+  平台 0 android 1 ios
+   */
+  int32 platform = 3;
+}
+
+/**
+  app信息
+ */
+message AppInfo{
+  /**
+  app包名
+   */
+  string name = 1;
+  /**
+  版本号
+   */
+  string version = 2;
+  /**
+  是否强制升级
+   */
+  bool isForce = 3;
+  /**
+  version code
+   */
+  int64 versionCode = 4;
+  /**
+  app包地址
+   */
+  string url = 5;
+  /**
+  版本信息
+   */
+  string versionInfo = 6;
+  /**
+  包大小
+   */
+  double size = 7;
+}
+/**
+  上传
+ */
+message UploadAppOrImgReq{
+  /**
+  上传App包
+   */
+  UploadApp uploadApp = 1;
+  /**
+  上传图片
+   */
+  UploadImg uploadImg = 2;
+  /**
+  上传类型 0 图片 1 apk
+   */
+  int32 type = 3;
+}
+/**
+上传图片
+ */
+message UploadImg{
+  /**
+  app图片
+   */
+  bytes imgFile = 1;
+  /**
+  app图片名称
+   */
+  string name = 2;
+}
+/**
+上传升级信息
+ */
+message UploadApp{
+  /**
+  app包
+   */
+  bytes packageFile = 1;
+  /**
+  app图片
+   */
+  bytes imgFile = 2;
+  /**
+  appId 1 云物
+   */
+  int32 appId = 3;
+  /**
+  app包名
+   */
+  string name = 4;
+  /**
+  版本号
+   */
+  string version = 5;
+  /**
+  是否强制升级
+   */
+  bool isForce = 6;
+  /**
+  version code
+   */
+  int32 versionCode = 7;
+  /**
+  版本信息
+   */
+  string versionInfo = 8;
+  /**
+  平台 0 android 1 ios
+   */
+  int32 platform = 9;
+}

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+service UploadService{
+  rpc uploadStream(stream UploadReq) returns (google.protobuf.BoolValue);
+
+  rpc upload(UploadReq) returns (google.protobuf.BoolValue);
+}
+
+message UploadReq{
+  string name = 1;
+  File file = 2;
+}
+
+message File{
+  bytes content = 1;
+}

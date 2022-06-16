@@ -1,0 +1,8 @@
+syntax="proto3";
+
+message Check{
+  oneof check_one {
+    string name=1;
+    int32 value=2;
+  }
+}

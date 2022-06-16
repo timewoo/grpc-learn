@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: local-grpc-server
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: 106.14.31.32
+grpc:
+  server:
+    port: 9098
+server:
+  port: 8081

@@ -1,0 +1,81 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/google/' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter/'}
+    }
+    dependencies {
+        classpath "com.google.protobuf:protobuf-gradle-plugin:0.8.16"
+    }
+}
+plugins {
+    id 'org.springframework.boot' version '2.4.3'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'com.google.protobuf' version '0.8.16'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'io.grpc:grpc-netty-shaded:1.36.0'
+    implementation 'io.grpc:grpc-protobuf:1.36.0'
+    implementation 'io.grpc:grpc-stub:1.36.0'
+    implementation 'com.alibaba.csp:sentinel-grpc-adapter:1.8.1'
+    compileOnly 'org.apache.tomcat:annotations-api:6.0.53'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.17.3"
+    }
+    generatedFilesBaseDir = "$projectDir/src/"
+//    clean {
+//        delete generatedFilesBaseDir
+//    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.39.0'
+        }
+    }
+    generateProtoTasks {
+        all().each{task->
+            task.builtins{
+                java{
+                    outputSubDir = '/java'
+                }
+            }
+            task.plugins{
+                grpc {
+                    outputSubDir = '/java'
+                }
+            }
+        }
+    }
+}
+//sourceSets{
+//    main{
+//        java{
+//            srcDir '/java'
+//        }
+//    }
+//}
+
+test {
+    useJUnitPlatform()
+}

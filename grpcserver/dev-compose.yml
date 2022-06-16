@@ -1,0 +1,36 @@
+version: '3.1'
+
+services:
+
+  mysql:
+    image: mysql:5.7
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+    - MYSQL_ROOT_PASSWORD=rootPassword
+    - MYSQL_DATABASE=db_app
+    - MYSQL_USER=mysql
+    - MYSQL_PASSWORD=mysqlPassword
+
+  devapp:
+    image: aylacn/gradle:6.4-jdk11-cn
+    command: ["bash"]
+    user: gradle
+    volumes:
+    - ".:/code"
+    working_dir: /code
+    environment:
+      GRADLE_USER_HOME: /code/.gradle
+    depends_on:
+      - mysql
+
+  flyway:
+    image: flyway/flyway:6.5-alpine
+    command: ["migrate"]
+    volumes:
+    - "./src/main/resources/db/migration:/flyway/sql"
+    environment:
+      FLYWAY_DRIVER: com.mysql.cj.jdbc.Driver
+      FLYWAY_URL: jdbc:mysql://mysql:3306/db_app?useUnicode=true&characterEncoding=utf-8
+      FLYWAY_USER: mysql
+      FLYWAY_PASSWORD: mysqlPassword
+      FLYWAY_CONNECT_RETRIES: 1

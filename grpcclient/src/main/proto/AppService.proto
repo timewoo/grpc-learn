@@ -1,0 +1,116 @@
+syntax = "proto3";
+option java_package = "com.aylaasia.referenceapp.grpc";
+import "google/protobuf/wrappers.proto";
+
+service AppService{
+  /**
+  上传app包或者图片
+   */
+  rpc uploadAppOrImg(UploadAppOrImgReq) returns (google.protobuf.StringValue);
+
+  /**
+  获取app最新版本
+   */
+  rpc getAppInfo(GetAppInfoReq) returns (AppInfo);
+}
+/**
+获取app最新版本入参
+ */
+message GetAppInfoReq{
+  /**
+  appId
+   */
+  int32 appId = 1;
+  /**
+  版本号
+   */
+  int64 versionCode = 2;
+  /**
+  平台 0 android 1 ios
+   */
+  int32 platform = 3;
+}
+
+/**
+  app信息
+ */
+message AppInfo{
+  /**
+  app包名
+   */
+  string name = 1;
+  /**
+  版本号
+   */
+  string version = 2;
+  /**
+  是否强制升级
+   */
+  bool isForce = 3;
+  /**
+  version code
+   */
+  int64 versionCode = 4;
+  /**
+  app包地址
+   */
+  string url = 5;
+  /**
+  版本信息
+   */
+  string versionInfo = 6;
+  /**
+  包大小
+   */
+  double size = 7;
+}
+/**
+  上传app包
+ */
+message UploadAppOrImgReq{
+  /**
+  app包
+   */
+  bytes packageFile = 1;
+  /**
+  app图片
+   */
+  bytes imgFile = 2;
+  /**
+  上传app信息
+   */
+  UploadApp uploadApp = 3;
+}
+/**
+上传升级信息
+ */
+message UploadApp{
+  /**
+  appId
+   */
+  int32 appId = 1;
+  /**
+  app包名
+   */
+  string name = 2;
+  /**
+  版本号
+   */
+  string version = 3;
+  /**
+  是否强制升级
+   */
+  bool isForce = 4;
+  /**
+  version code
+   */
+  int32 versionCode = 5;
+  /**
+  版本信息
+   */
+  string versionInfo = 6;
+  /**
+  平台 0 android 1 ios
+   */
+  int32 platform = 7;
+}

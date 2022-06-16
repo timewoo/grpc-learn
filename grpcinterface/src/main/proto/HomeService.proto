@@ -1,0 +1,59 @@
+syntax = "proto3";
+option java_package = "com.aylaasia.referenceapp.grpc";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+service HomeService{
+  /**
+  家庭列表
+   */
+  rpc getHomeList(google.protobuf.Empty) returns (HomeListResp);
+  /**
+  家庭详情，homeId
+   */
+  rpc getHomeInfo(google.protobuf.StringValue) returns (Home);
+  /**
+  编辑家庭
+   */
+  rpc updateHome(Home) returns (Home);
+}
+
+/**
+家庭列表出参
+ */
+message HomeListResp{
+  repeated Home homes = 1;
+}
+/**
+家庭信息
+ */
+message Home{
+  /**
+  家庭id
+   */
+  string homeId = 1;
+  /**
+  家庭名称
+   */
+  optional string homeName = 2;
+  /**
+  家庭地址
+   */
+  optional string address = 3;
+  /**
+  经度
+   */
+  optional string longitude = 4;
+  /**
+  维度
+   */
+  optional string latitude = 5;
+  /**
+  设备数量
+   */
+  int32 deviceNum = 6;
+  /**
+  房间数量
+   */
+  int32 roomNum = 7;
+}

@@ -1,0 +1,135 @@
+syntax = "proto3";
+//option java_package = "com.aylaasia.referenceapp.grpc";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+import "Base.proto";
+import "AuthService.proto";
+/**
+用户相关接口
+ */
+service UserService{
+  /**
+  获取用户信息
+   */
+  rpc getUserInfo(google.protobuf.Empty) returns (User);
+  /**
+  注销账户
+   */
+  rpc deleteAccount(google.protobuf.Empty) returns (Result);
+  /**
+  发送验证码
+   */
+  rpc sendVerificationCode(VerificationCodeReq) returns (Result);
+  /**
+  检验验证码
+   */
+  rpc checkVerificationCode(CheckVerificationCodeReq) returns (Result);
+  /**
+  编辑手机号
+   */
+  rpc updatePhone(CheckVerificationCodeReq) returns (Result);
+  /**
+  校验密码
+   */
+  rpc checkPassword(CheckPasswordReq) returns (Result);
+  /**
+  设置密码
+   */
+  rpc setPassword(SetPasswordReq) returns (Result);
+  /**
+  密码找回
+   */
+  rpc recoverPassword(RecoverPasswordReq) returns (Result);
+  /**
+  判断手机号注册，phone
+   */
+  rpc checkPhoneExist(google.protobuf.StringValue) returns (Result);
+  /**
+  编辑用户
+   */
+  rpc updateUser(User) returns (User);
+  /**
+  生成/刷新二维码
+   */
+  rpc createQrCode(google.protobuf.Empty) returns (google.protobuf.StringValue);
+}
+
+/**
+用户
+ */
+message User{
+  /**
+  昵称
+   */
+  string nickName = 1;
+  /**
+  手机号
+   */
+  string phone = 2;
+  /**
+  是否设置密码
+   */
+  bool existPassword = 3;
+  /**
+  头像url
+   */
+  string imgUrl = 4;
+  /**
+  时区id
+   */
+  int32 zoneId = 5;
+  /**
+  城市名
+   */
+  string cityName = 6;
+}
+/**
+检验验证码入参
+ */
+message CheckVerificationCodeReq{
+  /**
+  手机号
+   */
+  string phone = 1;
+  /**
+  验证码
+   */
+  string verificationCode = 2;
+}
+/**
+校验密码入参
+ */
+message CheckPasswordReq{
+  /**
+  密码
+   */
+  string password = 1;
+}
+
+/**
+设置密码入参
+ */
+message SetPasswordReq{
+  /**
+  旧密码，无旧密码不传
+   */
+  string oldPassword = 1;
+  /**
+  新密码
+   */
+  string newPassword = 2;
+}
+/**
+密码找回入参
+ */
+message RecoverPasswordReq{
+  /**
+  手机号
+   */
+  string phone = 1;
+  /**
+  密码
+   */
+  string password = 2;
+}

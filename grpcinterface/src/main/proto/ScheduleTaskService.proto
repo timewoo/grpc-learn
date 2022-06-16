@@ -1,0 +1,89 @@
+syntax = "proto3";
+option java_package = "com.aylaasia.referenceapp.grpc";
+
+import "google/protobuf/wrappers.proto";
+
+import "Base.proto";
+import "DeviceService.proto";
+
+service ScheduleTaskService{
+
+  /**
+  创建任务，taskId
+   */
+  rpc createJob(Job) returns (google.protobuf.StringValue);
+  /**
+  编辑任务
+   */
+  rpc updateJob(Job) returns (Result);
+  /**
+  移除任务，taskId
+   */
+  rpc removeJob(google.protobuf.StringValue) returns (Result);
+  /**
+  开启任务，taskId
+   */
+  rpc startJob(google.protobuf.StringValue) returns (Result);
+  /**
+  停止任务，taskId
+   */
+  rpc stopJob(google.protobuf.StringValue) returns (Result);
+  /**
+  任务列表
+   */
+  rpc getJobList(google.protobuf.StringValue) returns (GetJobListResp);
+  /**
+  任务详情
+   */
+  rpc getJobInfo(google.protobuf.StringValue) returns (Job);
+}
+/**
+任务
+ */
+message Job{
+  /**
+  任务id
+   */
+  string taskId = 1;
+  /**
+  任务关联主体id，deviceId，groupId...
+   */
+  string taskRelatedId = 2;
+  /**
+  倒计时开始计时时间
+   */
+  int64 startTime = 3;
+  /**
+  cron时间表达式
+   */
+  string cron = 4;
+  /**
+  任务名称
+   */
+  string jobDescribe = 5;
+  /**
+  属性设置
+   */
+  repeated DeviceProperty deviceProperties = 6;
+  /**
+  任务类型：【0：setProperty，1：Reset，2：OTA】
+   */
+  int32 taskType = 7;
+  /**
+  定时类型 【0：定时，1:倒计时】
+   */
+  int32 timingType = 8;
+  /**
+  调度状态：0-停止，1-运行
+   */
+  int32 triggerStatus = 9;
+}
+/**
+任务列表入参
+ */
+message GetJobListResp{
+  /**
+  任务列表
+   */
+  repeated Job jobs = 1;
+}

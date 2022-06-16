@@ -1,0 +1,84 @@
+syntax = "proto3";
+option java_package = "com.aylaasia.referenceapp.grpc";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+import "Base.proto";
+
+service RoomService{
+  /**
+  创建房间，roomId
+   */
+  rpc createRoom(CreateRoomReq) returns (google.protobuf.StringValue);
+  /**
+  获取房间列表，floorId
+   */
+  rpc getRoomList(google.protobuf.StringValue) returns (GetRoomListResp);
+  /**
+  获取room详情
+   */
+  rpc getRoomInfo(google.protobuf.StringValue) returns (Room);
+  /**
+  编辑room
+   */
+  rpc updateRoom(Room) returns (Room);
+  /**
+  删除房间，roomId
+   */
+  rpc deleteRoom(google.protobuf.StringValue) returns (Result);
+  /**
+  房间排序
+   */
+  rpc sortRooms(GetRoomListResp) returns (GetRoomListResp);
+}
+/**
+创建房间入参
+ */
+message CreateRoomReq{
+  /**
+  家庭id
+   */
+  string homeId = 1;
+  /**
+  楼层id
+   */
+  string floorId = 2;
+  /**
+  房间名称
+   */
+  string roomName = 3;
+}
+/**
+room列表出参
+ */
+message GetRoomListResp{
+  /**
+  room列表
+   */
+  repeated Room rooms = 1;
+}
+
+/**
+房间
+ */
+message Room{
+  /**
+  roomId
+   */
+  string roomId = 1;
+  /**
+  roomName
+   */
+  string roomName = 2;
+  /**
+  楼层id
+   */
+  string floorId = 3;
+  /**
+  homeId
+   */
+  string homeId = 4;
+  /**
+  排序
+   */
+  int32 sort = 5;
+}

@@ -1,0 +1,275 @@
+package com.example.grpcserver.grpc;
+
+import static io.grpc.MethodDescriptor.generateFullMethodName;
+
+/**
+ */
+@javax.annotation.Generated(
+    value = "by gRPC proto compiler (version 1.36.0)",
+    comments = "Source: checkparam.proto")
+public final class CheckServiceGrpc {
+
+  private CheckServiceGrpc() {}
+
+  public static final String SERVICE_NAME = "CheckService";
+
+  // Static method descriptors that strictly reflect the proto.
+  private static volatile io.grpc.MethodDescriptor<Checkparam.Request,
+      Checkparam.Response> getCheckMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "check",
+      requestType = Checkparam.Request.class,
+      responseType = Checkparam.Response.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<Checkparam.Request,
+      Checkparam.Response> getCheckMethod() {
+    io.grpc.MethodDescriptor<Checkparam.Request, Checkparam.Response> getCheckMethod;
+    if ((getCheckMethod = CheckServiceGrpc.getCheckMethod) == null) {
+      synchronized (CheckServiceGrpc.class) {
+        if ((getCheckMethod = CheckServiceGrpc.getCheckMethod) == null) {
+          CheckServiceGrpc.getCheckMethod = getCheckMethod =
+              io.grpc.MethodDescriptor.<Checkparam.Request, Checkparam.Response>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "check"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  Checkparam.Request.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  Checkparam.Response.getDefaultInstance()))
+              .setSchemaDescriptor(new CheckServiceMethodDescriptorSupplier("check"))
+              .build();
+        }
+      }
+    }
+    return getCheckMethod;
+  }
+
+  /**
+   * Creates a new async stub that supports all call types for the service
+   */
+  public static CheckServiceStub newStub(io.grpc.Channel channel) {
+    io.grpc.stub.AbstractStub.StubFactory<CheckServiceStub> factory =
+      new io.grpc.stub.AbstractStub.StubFactory<CheckServiceStub>() {
+        @Override
+        public CheckServiceStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+          return new CheckServiceStub(channel, callOptions);
+        }
+      };
+    return CheckServiceStub.newStub(factory, channel);
+  }
+
+  /**
+   * Creates a new blocking-style stub that supports unary and streaming output calls on the service
+   */
+  public static CheckServiceBlockingStub newBlockingStub(
+      io.grpc.Channel channel) {
+    io.grpc.stub.AbstractStub.StubFactory<CheckServiceBlockingStub> factory =
+      new io.grpc.stub.AbstractStub.StubFactory<CheckServiceBlockingStub>() {
+        @Override
+        public CheckServiceBlockingStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+          return new CheckServiceBlockingStub(channel, callOptions);
+        }
+      };
+    return CheckServiceBlockingStub.newStub(factory, channel);
+  }
+
+  /**
+   * Creates a new ListenableFuture-style stub that supports unary calls on the service
+   */
+  public static CheckServiceFutureStub newFutureStub(
+      io.grpc.Channel channel) {
+    io.grpc.stub.AbstractStub.StubFactory<CheckServiceFutureStub> factory =
+      new io.grpc.stub.AbstractStub.StubFactory<CheckServiceFutureStub>() {
+        @Override
+        public CheckServiceFutureStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+          return new CheckServiceFutureStub(channel, callOptions);
+        }
+      };
+    return CheckServiceFutureStub.newStub(factory, channel);
+  }
+
+  /**
+   */
+  public static abstract class CheckServiceImplBase implements io.grpc.BindableService {
+
+    /**
+     */
+    public void check(Checkparam.Request request,
+                      io.grpc.stub.StreamObserver<Checkparam.Response> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getCheckMethod(), responseObserver);
+    }
+
+    @Override public final io.grpc.ServerServiceDefinition bindService() {
+      return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
+          .addMethod(
+            getCheckMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                Checkparam.Request,
+                Checkparam.Response>(
+                  this, METHODID_CHECK)))
+          .build();
+    }
+  }
+
+  /**
+   */
+  public static final class CheckServiceStub extends io.grpc.stub.AbstractAsyncStub<CheckServiceStub> {
+    private CheckServiceStub(
+        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+      super(channel, callOptions);
+    }
+
+    @Override
+    protected CheckServiceStub build(
+        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+      return new CheckServiceStub(channel, callOptions);
+    }
+
+    /**
+     */
+    public void check(Checkparam.Request request,
+                      io.grpc.stub.StreamObserver<Checkparam.Response> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getCheckMethod(), getCallOptions()), request, responseObserver);
+    }
+  }
+
+  /**
+   */
+  public static final class CheckServiceBlockingStub extends io.grpc.stub.AbstractBlockingStub<CheckServiceBlockingStub> {
+    private CheckServiceBlockingStub(
+        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+      super(channel, callOptions);
+    }
+
+    @Override
+    protected CheckServiceBlockingStub build(
+        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+      return new CheckServiceBlockingStub(channel, callOptions);
+    }
+
+    /**
+     */
+    public Checkparam.Response check(Checkparam.Request request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getCheckMethod(), getCallOptions(), request);
+    }
+  }
+
+  /**
+   */
+  public static final class CheckServiceFutureStub extends io.grpc.stub.AbstractFutureStub<CheckServiceFutureStub> {
+    private CheckServiceFutureStub(
+        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+      super(channel, callOptions);
+    }
+
+    @Override
+    protected CheckServiceFutureStub build(
+        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+      return new CheckServiceFutureStub(channel, callOptions);
+    }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<Checkparam.Response> check(
+        Checkparam.Request request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getCheckMethod(), getCallOptions()), request);
+    }
+  }
+
+  private static final int METHODID_CHECK = 0;
+
+  private static final class MethodHandlers<Req, Resp> implements
+      io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
+      io.grpc.stub.ServerCalls.ServerStreamingMethod<Req, Resp>,
+      io.grpc.stub.ServerCalls.ClientStreamingMethod<Req, Resp>,
+      io.grpc.stub.ServerCalls.BidiStreamingMethod<Req, Resp> {
+    private final CheckServiceImplBase serviceImpl;
+    private final int methodId;
+
+    MethodHandlers(CheckServiceImplBase serviceImpl, int methodId) {
+      this.serviceImpl = serviceImpl;
+      this.methodId = methodId;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
+      switch (methodId) {
+        case METHODID_CHECK:
+          serviceImpl.check((Checkparam.Request) request,
+              (io.grpc.stub.StreamObserver<Checkparam.Response>) responseObserver);
+          break;
+        default:
+          throw new AssertionError();
+      }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public io.grpc.stub.StreamObserver<Req> invoke(
+        io.grpc.stub.StreamObserver<Resp> responseObserver) {
+      switch (methodId) {
+        default:
+          throw new AssertionError();
+      }
+    }
+  }
+
+  private static abstract class CheckServiceBaseDescriptorSupplier
+      implements io.grpc.protobuf.ProtoFileDescriptorSupplier, io.grpc.protobuf.ProtoServiceDescriptorSupplier {
+    CheckServiceBaseDescriptorSupplier() {}
+
+    @Override
+    public com.google.protobuf.Descriptors.FileDescriptor getFileDescriptor() {
+      return Checkparam.getDescriptor();
+    }
+
+    @Override
+    public com.google.protobuf.Descriptors.ServiceDescriptor getServiceDescriptor() {
+      return getFileDescriptor().findServiceByName("CheckService");
+    }
+  }
+
+  private static final class CheckServiceFileDescriptorSupplier
+      extends CheckServiceBaseDescriptorSupplier {
+    CheckServiceFileDescriptorSupplier() {}
+  }
+
+  private static final class CheckServiceMethodDescriptorSupplier
+      extends CheckServiceBaseDescriptorSupplier
+      implements io.grpc.protobuf.ProtoMethodDescriptorSupplier {
+    private final String methodName;
+
+    CheckServiceMethodDescriptorSupplier(String methodName) {
+      this.methodName = methodName;
+    }
+
+    @Override
+    public com.google.protobuf.Descriptors.MethodDescriptor getMethodDescriptor() {
+      return getServiceDescriptor().findMethodByName(methodName);
+    }
+  }
+
+  private static volatile io.grpc.ServiceDescriptor serviceDescriptor;
+
+  public static io.grpc.ServiceDescriptor getServiceDescriptor() {
+    io.grpc.ServiceDescriptor result = serviceDescriptor;
+    if (result == null) {
+      synchronized (CheckServiceGrpc.class) {
+        result = serviceDescriptor;
+        if (result == null) {
+          serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
+              .setSchemaDescriptor(new CheckServiceFileDescriptorSupplier())
+              .addMethod(getCheckMethod())
+              .build();
+        }
+      }
+    }
+    return result;
+  }
+}

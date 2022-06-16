@@ -1,0 +1,180 @@
+syntax = "proto3";
+option java_package = "com.aylaasia.referenceapp.grpc";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "Base.proto";
+import "DeviceService.proto";
+/**
+群组相关接口
+ */
+service GroupService{
+  /**
+  创建群组，返回群组id
+   */
+  rpc createGroup(CreateGroupReq) returns (google.protobuf.StringValue);
+  /**
+  群组属性列表
+   */
+  rpc getGroupProperties(google.protobuf.StringValue) returns (GetGroupPropertiesResp);
+  /**
+  群组属性控制
+   */
+  rpc setGroupProperty(SetGroupPropertyReq) returns (Result);
+  /**
+  群组详情，群组id
+   */
+  rpc getGroupInfo(google.protobuf.StringValue) returns (Group);
+  /**
+  群组获取单个属性
+   */
+  rpc getGroupProperty(GetGroupPropertyReq) returns (GetGroupPropertyResp);
+  /**
+  编辑群组
+   */
+  rpc updateGroup(UpdateGroupReq) returns (Group);
+  /**
+  解散群组，群组id
+   */
+  rpc deleteGroup(google.protobuf.StringValue) returns (Result);
+  /**
+  群组列表
+   */
+  rpc getGroupList(google.protobuf.Empty) returns (GetGroupListResp);
+}
+/**
+创建群组入参
+ */
+message CreateGroupReq{
+  /**
+  群组名称
+   */
+  string groupName = 1;
+  /**
+  设备ids
+   */
+  repeated string deviceIds = 2;
+  /**
+  oem model
+   */
+  string deviceCategory = 3;
+  /**
+  房间id
+   */
+  string roomId = 4;
+}
+/**
+获取群组属性列表出参
+ */
+message GetGroupPropertiesResp{
+  /**
+  群组属性
+   */
+  repeated DeviceProperty properties = 1;
+}
+/**
+群组属性控制入参
+ */
+message SetGroupPropertyReq{
+  /**
+  群组id
+   */
+  string groupId = 1;
+  /**
+  属性名
+   */
+  string propertyName = 2;
+  /**
+  属性值
+   */
+  string propertyValue = 3;
+}
+/**
+群组信息
+ */
+message Group{
+  /**
+  群组id
+   */
+  string groupId = 1;
+  /**
+  群组名称
+   */
+  string groupName = 2;
+  /**
+  设备列表
+   */
+  repeated Device devices = 3;
+  /**
+  创建时间
+   */
+  int64 createTime = 4;
+  /**
+  房间id
+   */
+  string roomId = 5;
+  /**
+  楼层排序
+   */
+  int32 floorSort = 6;
+  /**
+  排序
+   */
+  int32 sort = 7;
+}
+/**
+获取群组属性入参
+ */
+message GetGroupPropertyReq{
+  /**
+  群组id
+   */
+  string groupId = 1;
+  /**
+  属性名
+   */
+  string propertyName = 2;
+}
+/**
+获取群组属性出参
+ */
+message GetGroupPropertyResp{
+  /**
+  群组id
+   */
+  string groupId = 1;
+  /**
+  群组属性
+   */
+  DeviceProperty deviceProperty = 2;
+}
+/**
+编辑群组入参
+ */
+message UpdateGroupReq{
+  /**
+  群组id
+   */
+  string groupId = 1;
+  /**
+  群组名称
+   */
+  string groupName = 2;
+  /**
+  设备ids
+   */
+  repeated string deviceIds = 3;
+  /**
+  房间id
+   */
+  string roomId = 4;
+}
+/**
+群组列表出参
+ */
+message GetGroupListResp{
+  /**
+  群组列表
+   */
+  repeated Group groups = 1;
+}
+

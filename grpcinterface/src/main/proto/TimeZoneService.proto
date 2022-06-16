@@ -1,0 +1,43 @@
+syntax = "proto3";
+//option java_package = "com.aylaasia.referenceapp.grpc";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+import "UserService.proto";
+
+service TimeZoneService{
+
+  /**
+  获取时区列表
+   */
+  rpc getTimeZonList(google.protobuf.Empty) returns (TimeZoneListResp);
+  /**
+  设置时区
+   */
+  rpc setTimeZone(google.protobuf.Int32Value) returns (User);
+}
+/**
+ 时区列表出参
+ */
+message TimeZoneListResp{
+  /**
+  时区列表
+   */
+  repeated TimeZone timeZones = 1;
+}
+
+message TimeZone{
+  /**
+  时区id
+   */
+  int32 zoneId = 1;
+  /**
+  城市名
+   */
+  string cityName = 2;
+  /**
+  时区名称
+   */
+  string timeZoneName = 3;
+}

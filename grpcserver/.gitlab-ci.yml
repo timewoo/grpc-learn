@@ -1,0 +1,116 @@
+variables:
+  CONTAINER_IMAGE: $IMAGE_REGISTRY/$IMAGE_REGISTRY_NAMESPACE/$SRV_NAME:$CI_COMMIT_REF_NAME
+
+stages:
+  - detect
+  - build
+  - deploy
+    
+before_script:
+  - echo $CI_BUILDS_DIR
+
+.gradle-cache:
+  before_script:
+    - export GRADLE_USER_HOME=$(pwd)/.gradle
+  variables:
+    GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  cache:
+    key:
+      files:
+        - build.gradle
+    paths:
+      - .gradle/
+
+detect:gradle-compile:
+  stage: detect
+  image: ${CI_IMAGE_GRADLE}
+  only:
+    - /^issue[-|/].+$/
+    - /^feature[-|/].+$/
+    - /^bugfix[-|/].+$/
+  extends: .gradle-cache
+  script:
+    - gradle check
+  tags:
+    - docker
+    - build
+    - alish
+
+detect:db-migrate:
+  stage: detect
+  only:
+  - /^issue[-|/].+$/
+  - /^feature[-|/].+$/
+  - /^bugfix[-|/].+$/
+  variables:
+    MYSQL_ROOT_PASSWORD: rootPassword
+    MYSQL_USER: mysql
+    MYSQL_PASSWORD: mysqlPassword
+    MYSQL_DATABASE: db_test
+    FLYWAY_DRIVER: com.mysql.cj.jdbc.Driver
+    FLYWAY_URL: jdbc:mysql://mysql:3306/db_test?useUnicode=true"
+    FLYWAY_USER: mysql
+    FLYWAY_PASSWORD: mysqlPassword
+    FLYWAY_CONNECT_RETRIES: 1
+    FLYWAY_LOCATION_PATH: src/main/resources/db/migration
+  image: ${CI_IMAGE_FLYWAY}
+  services: 
+  - name: mysql:5.7
+    alias: mysql
+  script:
+  - /flyway/flyway migrate -locations=filesystem:${FLYWAY_LOCATION_PATH}
+  - /flyway/flyway info -locations=filesystem:${FLYWAY_LOCATION_PATH}
+  - /flyway/flyway clean -locations=filesystem:${FLYWAY_LOCATION_PATH}
+  tags:
+  - docker
+  - build
+  - alish
+
+## Build container image for integration
+build:docker-image:
+  stage: build
+  only:
+    - master
+    - tags
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"   # for docker:dind 19.03+
+  image: docker:19.03-git
+  services:
+    - docker:19.03-dind
+  script:
+    - echo "Building container image - $CONTAINER_IMAGE"
+    - >
+      docker image build \
+        --build-arg GRADLE_BUILD_IMAGE=$CI_IMAGE_GRADLE \
+        --build-arg JRE_RUN_IMAGE=$CI_IMAGE_JRE \
+        --build-arg NEXUS_USERNAME=$NEXUS_USERNAME \
+        --build-arg NEXUS_PASSWORD=$NEXUS_PASSWORD \
+        -t $CONTAINER_IMAGE .
+    - echo $IMAGE_REGISTRY_TOKEN | docker login $IMAGE_REGISTRY -u $IMAGE_REGISTRY_USER --password-stdin
+    - docker image push $CONTAINER_IMAGE
+    - docker logout $IMAGE_REGISTRY
+  tags:
+    - docker
+    - build
+    - image
+    - alish
+
+deploy:itenv:
+  stage: deploy
+  image: ${CD_IMAGE_RDCLI}
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - |
+      if [ "$TENV_UPGRADE_ENABLE" = "yes" ]; then
+        echo "Trigger ITENV Rundeck Upgrade Job - ${RD_URL}/${RD_PROJECT_TENV}/${RD_TENV_JOB}"
+        rd run -p ${RD_PROJECT_TENV} -j ${RD_TENV_JOB} -f -- -srvName ${SRV_NAME}
+      else
+        echo "Disabled ITENV Upgrade"
+      fi
+  only:
+    - master
+  tags:
+    - docker
+    - build
+    - alish

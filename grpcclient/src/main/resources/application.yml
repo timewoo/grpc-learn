@@ -1,0 +1,26 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: local-grpc-client
+  servlet:
+    multipart:
+      maxFileSize: -1
+      maxRequestSize: -1
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 106.14.31.32
+grpc:
+  client:
+    local-grpc-server:
+#      address: 'dns:///referenceapp-test.ayla.com.cn:9098'
+      address: "static://localhost:9098"
+#      address: "discovery:///local-grpc-server"
+#      address: "xds:///local-grpc-server"
+      negotiationType: plaintext
+#      default-load-balancing-policy: round_robin
+    reference-app:
+#      address: 'dns:///referenceapp-test-grpc.ayla.com.cn:443'
+      address: 'static://localhost:9098'
+      negotiationType: plaintext

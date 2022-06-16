@@ -1,0 +1,105 @@
+syntax = "proto3";
+option java_package = "com.aylaasia.referenceapp.grpc";
+import "google/protobuf/wrappers.proto";
+import "Base.proto";
+import "RoomService.proto";
+service FloorService{
+  /**
+  创建楼层，floorId
+   */
+  rpc createFloor(CreateFloorReq) returns (google.protobuf.StringValue);
+  /**
+  楼层列表，homeId
+   */
+  rpc getFloorList(google.protobuf.StringValue) returns (GetFloorListResp);
+  /**
+  删除楼层，floorId
+   */
+  rpc deleteFloor(google.protobuf.StringValue) returns (Result);
+  /**
+  楼层房间列表，homeId
+   */
+  rpc getFloorRoomList(google.protobuf.StringValue) returns (GetFloorRoomListResp);
+  /**
+  记住楼层，floorId
+   */
+  rpc rememberFloor(RememberFloorReq) returns (Result);
+}
+/**
+创建楼层入参
+ */
+message CreateFloorReq{
+  /**
+  排序
+   */
+  int32 sort = 1;
+  /**
+  homeId
+   */
+  string homeId = 2;
+}
+/**
+楼层列表出参
+ */
+message GetFloorListResp{
+  /**
+  楼层列表
+   */
+  repeated Floor floors = 1;
+}
+/**
+楼层
+ */
+message Floor{
+  /**
+  楼层id
+   */
+  string floorId = 1;
+  /**
+  排序
+   */
+  int32 sort = 2;
+  /**
+  homeId
+   */
+  string homeId = 3;
+  /**
+  状态 0 未记住 1 记住
+   */
+  int32 status = 4;
+}
+/**
+楼层房间列表入参
+ */
+message GetFloorRoomListResp{
+  /**
+  楼层房间列表
+   */
+  repeated FloorRoom floors = 1;
+}
+/**
+楼层房间
+ */
+message FloorRoom{
+  /**
+  楼层
+   */
+  Floor floor = 1;
+  /**
+  rooms
+   */
+  repeated Room rooms = 2;
+}
+/**
+记住楼层入参
+ */
+message RememberFloorReq{
+  /**
+  homeId
+   */
+  string homeId = 1;
+  /**
+  floorId
+   */
+  string floorId = 2;
+}

@@ -1,0 +1,28 @@
+syntax = "proto3";
+option java_package = "com.aylaasia.referenceapp.grpc";
+import "google/protobuf/wrappers.proto";
+
+service WeatherService{
+  /**
+  获取天气，homeId
+   */
+  rpc getWeatherLocal(google.protobuf.StringValue) returns (Weather);
+}
+
+/**
+天气
+ */
+message Weather{
+  /**
+  温度
+   */
+  string temperature = 1;
+  /**
+  空气质量
+   */
+  string quality = 2;
+  /**
+  天气
+   */
+  int32 weatherImg = 3;
+}
